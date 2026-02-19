@@ -1,6 +1,6 @@
 ﻿namespace InventoryManagementSystem.Api.Repository
 {
-    public class SupllierRepository
+    public class SuplierRepository
     {
     }
 }
