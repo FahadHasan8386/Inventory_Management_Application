@@ -16,3 +16,4 @@ namespace InventoryManagementSystem.Api.Models.Entities
 
     }
 }
+ 

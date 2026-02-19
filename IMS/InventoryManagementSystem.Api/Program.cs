@@ -1,9 +1,25 @@
+using InventoryManagementSystem.Api.Interfaces.IRepository;
+using InventoryManagementSystem.Api.Interfaces.IServices;
+using InventoryManagementSystem.Api.Repository;
+using InventoryManagementSystem.Api.Services;
+using Microsoft.Data.SqlClient;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
+builder.Services.AddScoped<System.Data.IDbConnection>(sp =>
+    new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
+
+// Register Services
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+// Register Repositories
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
