@@ -19,10 +19,6 @@ namespace InventoryManagementSystem.Api.Services
         }
         public async Task<Category?> GetCategoryByIdAsync(long categoryId)
         {
-            if(categoryId == null)
-            {
-                Console.WriteLine("No record here");
-            }
             return await _categoryRepository.GetCategoryByIdAsync(categoryId);
         }
         public async Task<int> DeleteCategoryAsync(long categoryId)

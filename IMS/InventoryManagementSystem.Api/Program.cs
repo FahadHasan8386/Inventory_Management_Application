@@ -16,9 +16,11 @@ builder.Services.AddScoped<System.Data.IDbConnection>(sp =>
 
 // Register Services
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 // Register Repositories
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 builder.Services.AddOpenApi();
 

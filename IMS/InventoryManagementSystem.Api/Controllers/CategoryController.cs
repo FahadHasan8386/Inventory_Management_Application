@@ -13,7 +13,7 @@ namespace InventoryManagementSystem.Api.Controllers
         {
             _categoryService = categoryService;
         }
-
+         
         [HttpGet("GetAllCategory")]
         public async Task<IActionResult> GetAllCategoryAsync()
         {

@@ -1,12 +1,40 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using InventoryManagementSystem.Api.Interfaces.IServices;
+using InventoryManagementSystem.Api.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryManagementSystem.Api.Controllers
 {
-    public class CustomerController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CustomerController : ControllerBase
     {
-        public IActionResult Index()
+        public readonly ICustomerService _customerService;
+
+        public CustomerController(ICustomerService customerService)
         {
-            return View();
+            _customerService = customerService;
+        }
+
+        [HttpGet("GetAllCustomer")]
+        public async Task<IActionResult> GetAllCustomerAsync()
+        {
+            return Ok(await _customerService.GetCustomerAsync());
+        }
+
+        [HttpGet("GetCustomerById/{customerId}")]
+        public async Task<IActionResult> GetCustomerByIdAsync(long customerId)
+        {
+            return Ok(await _customerService.GetCustomerByIdAsync(customerId));
+        }
+
+        [HttpDelete("DeleteCustomer/{customerId}")]
+        public async Task<IActionResult> DeleteCustomerAsync(long customerId)
+        {
+            if (customerId == 0)
+                return BadRequest();
+
+            return Ok(await _customerService.DeleteCustomerAsync(customerId));
         }
     }
 }
+ 

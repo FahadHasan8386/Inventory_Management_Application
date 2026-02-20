@@ -10,7 +10,7 @@ namespace InventoryManagementSystem.Api.Repository
     {
         private readonly IDbConnection _connection;
 
-        public CategoryRepository(IDbConnection connection)
+        public CategoryRepository(IDbConnection connection) 
         {
             _connection = connection;
         }
