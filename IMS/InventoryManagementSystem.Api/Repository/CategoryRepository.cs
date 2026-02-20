@@ -37,7 +37,7 @@ namespace InventoryManagementSystem.Api.Repository
 
         public async Task<int> DeleteCategoryAsync(long categoryId)
         {
-            var sql = @"DELETE FROM Categories WHERE @CateoryId = @CateoryId";
+            var sql = @"DELETE FROM Categories WHERE CateoryId = @CateoryId";
             _connection.Open();
             var result = await _connection.ExecuteAsync(sql, new
             {
