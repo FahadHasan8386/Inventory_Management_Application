@@ -35,7 +35,7 @@ namespace InventoryManagementSystem.Api.Repository
 
         public async Task<int> DeleteProductAsync(long productId)
         {
-            var sql = @"DELETE FROM Products WHERE ProductId = @ProductId";
+            var sql = @"DELETE FROM Products WHERE ProductId = @productId";
             _connection.Open();
             var result = await _connection.ExecuteAsync(sql, new
             {

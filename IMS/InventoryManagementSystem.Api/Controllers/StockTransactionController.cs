@@ -1,12 +1,39 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using InventoryManagementSystem.Api.Interfaces.IServices;
+using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryManagementSystem.Api.Controllers
 {
-    public class StockTransactionController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class StockTransactionController : ControllerBase
     {
-        public IActionResult Index()
+        public readonly IStockTransactionService _stockTransactionService;
+
+        public StockTransactionController(IStockTransactionService stockTransactionService)
         {
-            return View();
+            _stockTransactionService = stockTransactionService;
         }
+
+        [HttpGet("GetAllStockTransaction")]
+        public async Task<IActionResult> GetAllStockTransactionAsync()
+        {
+            return Ok(await _stockTransactionService.GetStockTransactionAsync());
+        }
+
+        [HttpGet("GetStockTransactionById/{stockTransactionId}")]
+        public async Task<IActionResult> GetStockTransactionByIdAsync(long stockTransactionId)
+        {
+            return Ok(await _stockTransactionService.GetStockTransactionByIdAsync(stockTransactionId));
+        }
+
+        [HttpDelete("DeleteStockTransaction/{stockTransactionId}")]
+        public async Task<IActionResult> DeleteStockTransactionAsync(long stockTransactionId)
+        {
+            if (stockTransactionId == 0)
+                return BadRequest();
+
+            return Ok(await _stockTransactionService.DeleteStockTransactionAsync(stockTransactionId));
+        }
+    
     }
 }
