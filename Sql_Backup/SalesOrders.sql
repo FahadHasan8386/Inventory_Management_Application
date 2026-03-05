@@ -17,6 +17,10 @@ CREATE TABLE SalesOrders (
     CreatedAt DATETIME NOT NULL 
         CONSTRAINT DF_SO_CreatedAt DEFAULT GETDATE(),
 
+    ModifiedBy NVARCHAR(50) NULL, 
+
+    ModifiedAt DATETIME NULL,
+
     -- Foreign Key
     CONSTRAINT FK_SalesOrders_Customers_CustomerId
         FOREIGN KEY (CustomerId)

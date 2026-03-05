@@ -12,8 +12,6 @@ namespace InventoryManagementSystem.Api.Models.Entities
         [Required]
         public string? CategoryDescription { get; set; }
 
-        public ICollection<Product> Products { get; set; }
-
     }
 }
  

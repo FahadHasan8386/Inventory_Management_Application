@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ExpenseManagement.Shared.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace InventoryManagementSystem.Api.Models.Entities
 {
-    public class Supplier
+    public class Supplier : BaseModel
     {
         public int SupplierId { get; set; }
 
@@ -21,6 +22,5 @@ namespace InventoryManagementSystem.Api.Models.Entities
 
         public string? Address { get; set; }
 
-        public ICollection<PurchaseOrder> PurchaseOrders { get; set; }
     }
 }

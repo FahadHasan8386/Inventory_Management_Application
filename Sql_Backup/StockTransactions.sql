@@ -1,4 +1,4 @@
-CREATE TABLE StockTransactions (
+﻿CREATE TABLE StockTransactions (
     TransactionId BIGINT IDENTITY(1,1) NOT NULL
         CONSTRAINT PK_StockTransactions PRIMARY KEY,
 
@@ -17,8 +17,16 @@ CREATE TABLE StockTransactions (
     ReferenceType NVARCHAR(20) NULL, -- 'PO', 'SO'
     ReferenceId BIGINT NULL,
 
+    -- BaseModel কলামগুলো এখানে যোগ করা হয়েছে
+    InActive BIT NOT NULL 
+        CONSTRAINT DF_ST_InActive DEFAULT 0,
     CreatedBy NVARCHAR(50) NOT NULL,
+    CreatedAt DATETIME NOT NULL 
+        CONSTRAINT DF_ST_CreatedAt DEFAULT GETDATE(),
+    ModifiedBy NVARCHAR(50) NULL,
+    ModifiedAt DATETIME NULL,
 
+    -- Foreign Key
     CONSTRAINT FK_ST_Products
         FOREIGN KEY (ProductId)
         REFERENCES Products(ProductId)

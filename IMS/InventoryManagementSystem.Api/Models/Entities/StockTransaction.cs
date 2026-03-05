@@ -1,17 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ExpenseManagement.Shared.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace InventoryManagementSystem.Api.Models.Entities
 {
-    public class StockTransaction
+    public class StockTransaction : BaseModel
     {
         public long TransactionId { get; set; }
 
-        [Required]
         public long ProductId { get; set; }
 
         [Required]
         [MaxLength(20)]
-        public string TransactionType { get; set; } // IN / OUT
+        public string? TransactionType { get; set; } // IN / OUT
 
         public int Quantity { get; set; }
 
@@ -22,11 +22,6 @@ namespace InventoryManagementSystem.Api.Models.Entities
 
         public long? ReferenceId { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public string CreatedBy { get; set; }
-
-        // Navigation
-        public Product Product { get; set; }
+        public Product? Product { get; set; }
     }
 }
