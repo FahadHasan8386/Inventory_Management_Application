@@ -1,19 +1,20 @@
 ﻿using ExpenseManagement.Shared.Models;
-using IMS.Shared.Models.ViewModel;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
-namespace InventoryManagementSystem.Api.Models.Entities
+namespace IMS.Shared.Models.DtoModel
 {
-    public sealed class Product : BaseModel    
+    public class ProductDto : BaseModel
     {
         public long ProductId { get; set; }
 
+        [Required]
+        [MaxLength(200)]
         public string ProductName { get; set; }
-
+        [Required]
         public int CategoryId { get; set; }
-
-        public CategoryViewModel Category { get; set; } = new();
 
         public decimal UnitPrice { get; set; } = 0;
 

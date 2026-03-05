@@ -1,11 +1,12 @@
 ﻿using ExpenseManagement.Shared.Models;
-using IMS.Shared.Models.ViewModel;
-using System.ComponentModel.DataAnnotations;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
-namespace InventoryManagementSystem.Api.Models.Entities
+namespace IMS.Shared.Models.ViewModel
 {
-    public sealed class SalesOrder : BaseModel
+    public sealed class SalesOrderViewModel : BaseModel
     {
         public long SalesOrderId { get; set; }
 

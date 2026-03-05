@@ -1,14 +1,18 @@
 ﻿using ExpenseManagement.Shared.Models;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
-namespace InventoryManagementSystem.Api.Models.Entities
+namespace IMS.Shared.Models.DtoModel
 {
-    public sealed class Category : BaseModel
+    public class CategoryDto : BaseModel
     {
         public int CategoryId { get; set; }
-        public string CategoryName { get; set; }
-        public string? CategoryDescription { get; set; }
 
-    }
+        [Required]
+        public string CategoryName { get; set; }
+        [Required]
+        public string? CategoryDescription { get; set; }
+    }  
 }
- 

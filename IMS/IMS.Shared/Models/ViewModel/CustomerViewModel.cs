@@ -1,10 +1,13 @@
 ﻿using ExpenseManagement.Shared.Models;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
-namespace InventoryManagementSystem.Api.Models.Entities
+namespace IMS.Shared.Models.ViewModel
 {
-    public sealed class Customer : BaseModel
+    public sealed class CustomerViewModel : BaseModel
     {
         public int CustomerId { get; set; }
 

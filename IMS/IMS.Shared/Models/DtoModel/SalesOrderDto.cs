@@ -1,20 +1,20 @@
 ﻿using ExpenseManagement.Shared.Models;
-using IMS.Shared.Models.ViewModel;
-using System.ComponentModel.DataAnnotations;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
-namespace InventoryManagementSystem.Api.Models.Entities
+namespace IMS.Shared.Models.DtoModel
 {
-    public sealed class SalesOrder : BaseModel
+    public class SalesOrderDto : BaseModel
     {
         public long SalesOrderId { get; set; }
 
         public int CustomerId { get; set; }
 
-        public CustomerViewModel Customer { get; set; } = new();
-
         public DateTime OrderDate { get; set; } = DateTime.Today;
 
+        [Column(TypeName = "decimal(18,3)")]
         public decimal TotalAmount { get; set; }
     }
 }

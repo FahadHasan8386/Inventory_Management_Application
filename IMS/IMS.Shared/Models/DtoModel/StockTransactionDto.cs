@@ -1,23 +1,26 @@
 ﻿using ExpenseManagement.Shared.Models;
-using IMS.Shared.Models.ViewModel;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
-namespace InventoryManagementSystem.Api.Models.Entities
+namespace IMS.Shared.Models.DtoModel
 {
-    public sealed class StockTransaction : BaseModel
+    public class StockTransactionDto : BaseModel
     {
         public long TransactionId { get; set; }
 
         public long ProductId { get; set; }
 
-        public ProductViewModel Product { get; set; } = new();
-
+        [Required]
+        [MaxLength(20)]
         public string? TransactionType { get; set; } // IN / OUT
 
         public int Quantity { get; set; }
 
         public DateTime TransactionDate { get; set; } = DateTime.Now;
 
+        [MaxLength(20)]
         public string? ReferenceType { get; set; } // PO / SO
 
         public long? ReferenceId { get; set; }

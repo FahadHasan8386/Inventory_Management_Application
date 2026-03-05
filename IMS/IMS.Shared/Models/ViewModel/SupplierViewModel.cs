@@ -1,9 +1,12 @@
 ﻿using ExpenseManagement.Shared.Models;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
-namespace InventoryManagementSystem.Api.Models.Entities
+namespace IMS.Shared.Models.ViewModel
 {
-    public class Supplier : BaseModel
+    public sealed class SupplierViewModel : BaseModel
     {
         public int SupplierId { get; set; }
 
@@ -16,6 +19,5 @@ namespace InventoryManagementSystem.Api.Models.Entities
         public string? Email { get; set; }
 
         public string? Address { get; set; }
-
     }
 }

@@ -1,10 +1,12 @@
 ﻿using ExpenseManagement.Shared.Models;
-using IMS.Shared.Models.ViewModel;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
-namespace InventoryManagementSystem.Api.Models.Entities
+namespace IMS.Shared.Models.ViewModel
 {
-    public sealed class StockTransaction : BaseModel
+    public sealed class StockTransactionViewModel : BaseModel
     {
         public long TransactionId { get; set; }
 
