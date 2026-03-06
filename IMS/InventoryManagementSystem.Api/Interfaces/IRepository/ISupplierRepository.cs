@@ -1,4 +1,5 @@
-﻿using InventoryManagementSystem.Api.Models.Entities;
+﻿using IMS.Shared.Models.DtoModel;
+using InventoryManagementSystem.Api.Models.Entities;
 
 namespace InventoryManagementSystem.Api.Interfaces.IRepository
 {
@@ -6,6 +7,8 @@ namespace InventoryManagementSystem.Api.Interfaces.IRepository
     {
         Task<List<Supplier>> GetAllSupplierAsync();
         Task<Supplier?> GetSupplierByIdAsync(long supplierId);
+        Task<long> AddSupplierAsync(SupplierDto supplierId);
+        Task<int> UpdateSupplierAsync(SupplierDto supplierId);
         Task<int> DeleteSupplierAsync(long supplierId);
     }
 }
