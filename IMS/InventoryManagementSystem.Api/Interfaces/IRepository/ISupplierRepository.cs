@@ -7,8 +7,8 @@ namespace InventoryManagementSystem.Api.Interfaces.IRepository
     {
         Task<List<Supplier>> GetAllSupplierAsync();
         Task<Supplier?> GetSupplierByIdAsync(long supplierId);
-        Task<long> AddSupplierAsync(SupplierDto supplierId);
-        Task<int> UpdateSupplierAsync(SupplierDto supplierId);
+        Task<long> AddSupplierAsync(SupplierDto supplierDto);
+        Task<int> UpdateSupplierAsync(SupplierDto supplierDto);
         Task<int> DeleteSupplierAsync(long supplierId);
     }
 }
