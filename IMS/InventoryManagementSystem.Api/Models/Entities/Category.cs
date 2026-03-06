@@ -1,4 +1,4 @@
-﻿using ExpenseManagement.Shared.Models;
+﻿using IMS.Shared.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace InventoryManagementSystem.Api.Models.Entities

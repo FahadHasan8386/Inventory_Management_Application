@@ -1,4 +1,4 @@
-﻿namespace ExpenseManagement.Shared.Models
+﻿namespace IMS.Shared.Models
 {
     public class BaseModel
     {

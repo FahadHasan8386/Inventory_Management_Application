@@ -1,4 +1,4 @@
-﻿using ExpenseManagement.Shared.Models;
+﻿using IMS.Shared.Models;
 using IMS.Shared.Models.ViewModel;
 using System.ComponentModel.DataAnnotations;
 

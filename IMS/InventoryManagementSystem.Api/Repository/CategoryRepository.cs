@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using IMS.Shared.Models.DtoModel;
 using InventoryManagementSystem.Api.Interfaces.IRepository;
 using InventoryManagementSystem.Api.Models.Entities;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -35,13 +36,50 @@ namespace InventoryManagementSystem.Api.Repository
             });
         }
 
-        public async Task<int> DeleteCategoryAsync(long categoryId)
+        public async Task<long> AddCategoryAsync(CategoryDto categoryDto)
         {
-            var sql = @"DELETE FROM Categories WHERE CateoryId = @CateoryId";
+            var sql = @"INSERT INTO Categories (CategoryName , CategoryDescription , CreatedBy)
+                        OUTPUT INSERTED.CategoryId
+                        VALUES(@CategoryName , @CategoryDescription ,@CreatedBy)";
+            _connection.Open();
+            var result = await _connection.ExecuteScalarAsync<long>(sql, new
+            {
+                @CategoryName = categoryDto.CategoryName,
+                @CategoryDescription = categoryDto.CategoryDescription,
+                @CreatedBy = categoryDto.CreatedBy
+            });
+            _connection.Close();
+            return result;
+        }
+
+        public async Task<int> UpdateCategoryAsync(CategoryDto categoryDto)
+        {
+            var sql = @"UPDATE Categories SET 
+                        CategoryName = @CategoryName,
+                        CategoryDescription = @CategoryDescription,
+                        ModifiedBy = @ModifiedBy,
+                         ModifiedAt = GETDATE()
+                        WHERE CategoryId = @CategoryId
+                        ";
             _connection.Open();
             var result = await _connection.ExecuteAsync(sql, new
             {
-                @CateoryId = categoryId
+                @CategoryId = categoryDto.CategoryId,
+                @CategoryName = categoryDto.CategoryName,
+                @CategoryDescription = categoryDto.CategoryDescription,
+                @ModifiedBy = categoryDto.CreatedBy
+            });
+            _connection.Close();
+            return result;
+        }
+
+        public async Task<int> DeleteCategoryAsync(long categoryId)
+        {
+            var sql = @"DELETE FROM Categories WHERE CategoryId = @CategoryId";
+            _connection.Open();
+            var result = await _connection.ExecuteAsync(sql, new
+            {
+                @CategoryId = categoryId
             });
             _connection.Close();
             return result;
