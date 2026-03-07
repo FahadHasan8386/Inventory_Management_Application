@@ -11,7 +11,7 @@ namespace InventoryManagementSystem.Api.Models.Entities
 
         public int CustomerId { get; set; }
 
-        public CustomerViewModel Customer { get; set; } = new();
+        public Customer Customer { get; set; } = new();
 
         public DateTime OrderDate { get; set; } = DateTime.Today;
 

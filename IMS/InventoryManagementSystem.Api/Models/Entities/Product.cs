@@ -13,7 +13,7 @@ namespace InventoryManagementSystem.Api.Models.Entities
 
         public int CategoryId { get; set; }
 
-        public CategoryViewModel Category { get; set; } = new();
+        public Category Category { get; set; } = new();
 
         public decimal UnitPrice { get; set; } = 0;
 

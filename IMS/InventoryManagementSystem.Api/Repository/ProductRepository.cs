@@ -1,4 +1,6 @@
 ﻿using Dapper;
+using IMS.Shared.Models.DtoModel;
+using IMS.Shared.Models.ViewModel;
 using InventoryManagementSystem.Api.Interfaces.IRepository;
 using InventoryManagementSystem.Api.Models.Entities;
 using System.Data;
@@ -15,22 +17,90 @@ namespace InventoryManagementSystem.Api.Repository
         }
         public async Task<List<Product>> GetAllProductAsync()
         {
-            var sql = @"SELECT * FROM  Products";
+            var sql = @"SELECT p.ProductId,
+                               p.ProductName,
+                               p.UnitPrice,
+                               p.StockQuantity,
+                               p.CreatedBy,
+	                           p.CreatedAt,
+	                           p.ModifiedBy,
+	                           p.ModifiedAt,
+                               p.CategoryId,
+                               c.CategoryName
+                               FROM Products AS p
+                               INNER JOIN Category AS c ON p.CategoryId = c.CategoryId";
             _connection.Open();
-            var result = await _connection.QueryAsync<Product>(sql);
+            var result = await _connection.QueryAsync(sql,
+                map: (Product e, Category c) =>
+                {
+                    e.Category = c;
+                    return e;
+                },
+                splitOn: "CategoryId");
             _connection.Close();
+
             return result.ToList();
         }
 
         public async Task<Product?> GetProductByIdAsync(long productId)
         {
-            const string sql = @"SELECT TOP(1) * FROM Products WHERE ProductId = @productId";
+            const string sql = @"SELECT p.ProductId,
+                               p.ProductName,
+                               p.UnitPrice,
+                               p.StockQuantity,
+                               p.CreatedAt
+                               p.CategoryId,
+                               c.CategoryName
+                               FROM Products AS e
+                               INNER JOIN Category AS c ON p.CategoryId = c.CategoryId
+                               WHERE p.productId = @ProductId";
 
-            using var connection = _connection;
-            return await _connection.QueryFirstOrDefaultAsync<Product>(sql, new
+            _connection.Open();
+            var result = await _connection.QueryAsync(sql,
+                map: (Product e, Category c) =>
+                {
+                    e.Category = c;
+                    return e;
+                },
+                splitOn: "CategoryId");
+            _connection.Close();
+            return result.FirstOrDefault();
+        }
+
+        public async Task<long> AddProductAsync(ProductDto productDto)
+        {
+            var sql = @"INSERT INTO Products(ProductName , CategoryId , UnitPrice , StockQuantity , CreatedBy)
+                       OUTPUT INSERTED.ProductId
+                       VALUES(@ProductName ,@CategoryId ,@UnitPrice, @StockQuantity ,@CreatedBy)";
+            _connection.Open();
+            var reasult = await _connection.ExecuteScalarAsync<long>(sql, productDto);
+            _connection.Close();
+            return reasult;
+        }
+
+        public async Task<int> UpdateProductAsync(ProductDto productDto)
+        {
+            var sql = @"UPDATE Products SET 
+                        ProductName = @CustomerName,
+                        CategoryId = @CategoryId,
+                        UnitPrice = @UnitPrice,
+                        StockQuantity = @StockQuantity, 
+                        ModifiedBy = @ModifiedBy,
+                         ModifiedAt = GETDATE()
+                        WHERE ProductId = @ProductId
+                        ";
+            _connection.Open();
+            var result = await _connection.ExecuteAsync(sql, new
             {
-                productId
+                @ProductId = productDto.ProductId,
+                @ProductName = productDto.ProductName,
+                @CategoryId = productDto.CategoryId,
+                @UnitPrice = productDto.UnitPrice,
+                @StockQuantity = productDto.StockQuantity,
+                @ModifiedBy = productDto.CreatedBy
             });
+            _connection.Close();
+            return result;
         }
 
         public async Task<int> DeleteProductAsync(long productId)

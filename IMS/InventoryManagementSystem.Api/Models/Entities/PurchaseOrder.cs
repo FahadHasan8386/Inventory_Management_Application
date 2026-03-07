@@ -11,7 +11,7 @@ namespace InventoryManagementSystem.Api.Models.Entities
 
         public int SupplierId { get; set; }
 
-        public SupplierViewModel Supplier { get; set; } = new();
+        public Supplier Supplier { get; set; } = new();
 
         public DateTime OrderDate { get; set; } = DateTime.Today;
 
