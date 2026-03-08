@@ -28,13 +28,13 @@ namespace InventoryManagementSystem.Api.Repository
                                p.CategoryId,
                                c.CategoryName
                                FROM Products AS p
-                               INNER JOIN Category AS c ON p.CategoryId = c.CategoryId";
+                               INNER JOIN Categories AS c ON p.CategoryId = c.CategoryId";
             _connection.Open();
             var result = await _connection.QueryAsync(sql,
-                map: (Product e, Category c) =>
+                map: (Product p, Category c) =>
                 {
-                    e.Category = c;
-                    return e;
+                    p.Category = c;
+                    return p;
                 },
                 splitOn: "CategoryId");
             _connection.Close();
@@ -48,22 +48,26 @@ namespace InventoryManagementSystem.Api.Repository
                                p.ProductName,
                                p.UnitPrice,
                                p.StockQuantity,
-                               p.CreatedAt
+                               p.CreatedAt,
                                p.CategoryId,
                                c.CategoryName
-                               FROM Products AS e
-                               INNER JOIN Category AS c ON p.CategoryId = c.CategoryId
-                               WHERE p.productId = @ProductId";
+                        FROM Products AS p
+                        INNER JOIN Categories AS c ON p.CategoryId = c.CategoryId
+                        WHERE p.ProductId = @ProductId";
 
-            _connection.Open();
-            var result = await _connection.QueryAsync(sql,
-                map: (Product e, Category c) =>
+            using var connection = _connection;
+
+            var result = await connection.QueryAsync<Product, Category, Product>(
+                sql,
+                (p, c) =>
                 {
-                    e.Category = c;
-                    return e;
+                    p.Category = c;
+                    return p;
                 },
-                splitOn: "CategoryId");
-            _connection.Close();
+                new { ProductId = productId },
+                splitOn: "CategoryId"
+            );
+
             return result.FirstOrDefault();
         }
 
