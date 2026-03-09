@@ -29,7 +29,7 @@ namespace InventoryManagementSystem.Api.Controllers
         }
 
         [HttpPost("CreateProduct")]
-        public async Task<IActionResult> CreateSupplierAsync([FromBody] ProductDto productDto)
+        public async Task<IActionResult> CreateProductAsync([FromBody] ProductDto productDto)
         {
             if (productDto == null)
             {

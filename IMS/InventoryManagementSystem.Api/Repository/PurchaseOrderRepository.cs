@@ -14,24 +14,61 @@ namespace InventoryManagementSystem.Api.Repository
         {
             _connection = connection;
         }
+        
         public async Task<List<PurchaseOrder>> GetAllPurchaseOrderAsync()
         {
-            var sql = @"SELECT * FROM  PurchaseOrders";
+            var sql = @"SELECT p.PurchaseOrderId,
+                               p.OrderDate,
+                               p.TotalAmount,
+                               p.Remarks,
+                               p.CreatedBy,
+	                           p.CreatedAt,
+	                           p.ModifiedBy,
+	                           p.ModifiedAt,
+                               p.SupplierId,
+                               c.SupplierName
+                               FROM PurchaseOrders AS p
+                               INNER JOIN Suppliers AS c ON p.SupplierId = c.SupplierId";
             _connection.Open();
-            var result = await _connection.QueryAsync<PurchaseOrder>(sql);
+            var result = await _connection.QueryAsync(sql,
+                map: (PurchaseOrder p, Supplier c) =>
+                {
+                    p.Supplier = c;
+                    return p;
+                },
+                splitOn: "SupplierId");
             _connection.Close();
+
             return result.ToList();
         }
 
-        public async Task<PurchaseOrder?> GetPurchaseOrderByIdAsync(long purchaseOrderId)
+        public async Task<PurchaseOrder?> GetPurchaseOrderByIdAsync(long productId)
         {
-            const string sql = @"SELECT TOP(1) * FROM PurchaseOrders WHERE PurchaseOrderId = @purchaseOrderId";
+            const string sql = @"SELECT p.PurchaseOrderId,
+                               p.OrderDate,
+                               p.TotalAmount,
+                               p.Remarks,
+                               p.CreatedAt,
+                               p.SupplierId,
+                               c.SupplierName
+                        FROM PurchaseOrders AS p
+                        INNER JOIN Suppliers AS c ON p.SupplierId = c.SupplierId
+                        WHERE p.PurchaseOrderId = @PurchaseOrderId";
 
             using var connection = _connection;
-            return await _connection.QueryFirstOrDefaultAsync<PurchaseOrder>(sql, new
-            {
-                purchaseOrderId
-            });
+
+            var result = await connection.QueryAsync<PurchaseOrder, Supplier, PurchaseOrder>(
+                sql,
+                (p, c) =>
+                {
+                    p.Supplier = c;
+                    return p;
+                },
+                new { ProductId = productId },
+                splitOn: "SupplierId"
+            );
+
+            return result.FirstOrDefault();
         }
 
         public async Task<long> AddPurchaseOrderAsync(PurchaseOrderDto purchaseOrderDto)
