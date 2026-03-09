@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using IMS.Shared.Models.DtoModel;
 using InventoryManagementSystem.Api.Interfaces.IRepository;
 using InventoryManagementSystem.Api.Models.Entities;
 using System.Data;
@@ -30,6 +31,38 @@ namespace InventoryManagementSystem.Api.Repository
             return await _connection.QueryFirstOrDefaultAsync<PurchaseOrder>(sql, new
             {
                 purchaseOrderId
+            });
+        }
+
+        public async Task<long> AddPurchaseOrderAsync(PurchaseOrderDto purchaseOrderDto)
+        {
+            var sql = @"INSERT INTO PurchaseOrders (PurchaseOrderName, SupplierId, OrderDate, TotalAmount, Remarks, CreatedBy)
+                        OUTPUT INSERTED.PurchaseOrderId
+                        VALUES (@PurchaseOrderName, @SupplierId, @OrderDate, @TotalAmount, @Remarks, @CreatedBy)";
+            _connection.Open();
+            var reasult = await _connection.ExecuteScalarAsync<long>(sql, purchaseOrderDto);
+            _connection.Close();
+            return reasult;
+        }
+
+        public async Task<int> UpdatePurchaseOrderAsync(PurchaseOrderDto purchaseOrderDto)
+        {
+            var sql = @"UPDATE PurchaseOrders SET 
+                        SupplierId = @SupplierId,
+                        OrderDate = @OrderDate,
+                        TotalAmount = @TotalAmount, 
+                        Remarks = @Remarks, 
+                        ModifiedBy = @ModifiedBy,
+                         ModifiedAt = GETDATE()
+                        WHERE PurchaseOrderId = @PurchaseOrderId";
+            return await _connection.ExecuteAsync(sql, new
+            {
+                purchaseOrderDto.SupplierId,
+                purchaseOrderDto.OrderDate,
+                purchaseOrderDto.TotalAmount,
+                purchaseOrderDto.Remarks,
+                ModifiedBy = purchaseOrderDto.CreatedBy,
+                purchaseOrderDto.PurchaseOrderId
             });
         }
 

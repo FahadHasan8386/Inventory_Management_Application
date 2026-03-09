@@ -85,7 +85,7 @@ namespace InventoryManagementSystem.Api.Repository
         public async Task<int> UpdateProductAsync(ProductDto productDto)
         {
             var sql = @"UPDATE Products SET 
-                        ProductName = @CustomerName,
+                        ProductName = @ProductName,
                         CategoryId = @CategoryId,
                         UnitPrice = @UnitPrice,
                         StockQuantity = @StockQuantity, 
