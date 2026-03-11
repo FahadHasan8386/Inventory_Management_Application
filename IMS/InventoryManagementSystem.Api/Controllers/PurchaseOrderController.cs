@@ -38,7 +38,7 @@ namespace InventoryManagementSystem.Api.Controllers
             return Ok(await _purchaseOrderService.AddPurchaseOrderAsync(purchaseOrderDto));
         }
 
-        [HttpPut("UpdateProduct")]
+        [HttpPut("UpdatePurchaseOrder")]
         public async Task<IActionResult> UpdatePurchaseOrderAsync([FromBody] PurchaseOrderDto purchaseOrderDto)
         {
             if (purchaseOrderDto == null)

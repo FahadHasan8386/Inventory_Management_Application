@@ -1,4 +1,6 @@
-﻿using InventoryManagementSystem.Api.Interfaces.IServices;
+﻿using IMS.Shared.Models.DtoModel;
+using InventoryManagementSystem.Api.Interfaces.IServices;
+using InventoryManagementSystem.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryManagementSystem.Api.Controllers
@@ -24,6 +26,26 @@ namespace InventoryManagementSystem.Api.Controllers
         public async Task<IActionResult> GetSalesOrderByIdAsync(long salesOrderId)
         {
             return Ok(await _salesOrderService.GetSalesOrderByIdAsync(salesOrderId));
+        }
+
+        [HttpPost("CreateSalesOrder")]
+        public async Task<IActionResult> CreateSalesOrderAsync([FromBody] SalesOrderDto salesOrderDto)
+        {
+            if (salesOrderDto == null)
+            {
+                return BadRequest();
+            }
+            return Ok(await _salesOrderService.AddSalesOrderAsync(salesOrderDto));
+        }
+
+        [HttpPut("UpdateSalesOrder")]
+        public async Task<IActionResult> UpdateSalesOrderAsync([FromBody] SalesOrderDto salesOrderDto)
+        {
+            if (salesOrderDto == null)
+            {
+                return BadRequest();
+            }
+            return Ok(await _salesOrderService.UpdateSalesOrderAsync(salesOrderDto));
         }
 
         [HttpDelete("DeleteSalesOrder/{salesOrderId}")]
