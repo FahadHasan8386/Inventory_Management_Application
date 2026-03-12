@@ -25,7 +25,7 @@ namespace InventoryManagementSystem.Api.Repository
 
         public async Task<StockTransaction?> GetStockTransactionByIdAsync(long stockTransactionId)
         {
-            const string sql = @"SELECT TOP(1) * FROM StockTransactions WHERE StockTransactionId = @stockTransactionId";
+            const string sql = @"SELECT TOP(1) * FROM StockTransactions WHERE StockTransactionId = @StockTransactionId";
 
             using var connection = _connection;
             return await _connection.QueryFirstOrDefaultAsync<StockTransaction>(sql, new
