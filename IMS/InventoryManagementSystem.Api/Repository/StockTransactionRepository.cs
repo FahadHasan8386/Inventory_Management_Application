@@ -14,24 +14,81 @@ namespace InventoryManagementSystem.Api.Repository
         {
             _connection = connection;
         }
+
         public async Task<List<StockTransaction>> GetAllStockTransactionAsync()
         {
-            var sql = @"SELECT * FROM  StockTransactions";
+            var sql = @"SELECT 
+                        p.TransactionId,
+                        p.TransactionType,
+                        p.Quantity,
+                        p.TransactionDate,
+                        p.ReferenceType,
+                        p.ReferenceId,
+                        p.CreatedBy,
+                        p.CreatedAt,
+                        p.ModifiedBy,
+                        p.ModifiedAt,
+                        p.ProductId,
+                        c.ProductId,
+                        c.ProductName
+                        FROM StockTransaction AS p
+                        INNER JOIN Products AS c 
+                        ON p.ProductId = c.ProductId";
+
             _connection.Open();
-            var result = await _connection.QueryAsync<StockTransaction>(sql);
+
+            var result = await _connection.QueryAsync<StockTransaction, Product, StockTransaction>(
+                sql,
+                (p, c) =>
+                {
+                    p.Product = c;
+                    return p;
+                },
+                splitOn: "ProductId"
+            );
+
             _connection.Close();
+
             return result.ToList();
         }
 
         public async Task<StockTransaction?> GetStockTransactionByIdAsync(long stockTransactionId)
         {
-            const string sql = @"SELECT TOP(1) * FROM StockTransactions WHERE StockTransactionId = @StockTransactionId";
+            var sql = @"SELECT 
+                        p.TransactionId,
+                        p.TransactionType,
+                        p.Quantity,
+                        p.TransactionDate,
+                        p.ReferenceType,
+                        p.ReferenceId,
+                        p.CreatedBy,
+                        p.CreatedAt,
+                        p.ModifiedBy,
+                        p.ModifiedAt,
+                        p.ProductId,
+                        c.ProductId,
+                        c.ProductName
+                        FROM StockTransaction AS p
+                        INNER JOIN Products AS c 
+                        ON p.ProductId = c.ProductId
+                        WHERE p.TransactionId = @stockTransactionId";
 
-            using var connection = _connection;
-            return await _connection.QueryFirstOrDefaultAsync<StockTransaction>(sql, new
-            {
-                stockTransactionId
-            });
+            _connection.Open();
+
+            var result = await _connection.QueryAsync<StockTransaction, Product, StockTransaction>(
+                sql,
+                (p, c) =>
+                {
+                    p.Product = c;
+                    return p;
+                },
+                new { stockTransactionId },
+                splitOn: "ProductId"
+            );
+
+            _connection.Close();
+
+            return result.FirstOrDefault();
         }
 
         public async Task<long> AddStockTransactionAsync(StockTransactionDto stockTransactionDto)
