@@ -31,7 +31,7 @@ namespace InventoryManagementSystem.Api.Repository
                         p.ProductId,
                         c.ProductId,
                         c.ProductName
-                        FROM StockTransaction AS p
+                        FROM StockTransactions AS p
                         INNER JOIN Products AS c 
                         ON p.ProductId = c.ProductId";
 
@@ -68,7 +68,7 @@ namespace InventoryManagementSystem.Api.Repository
                         p.ProductId,
                         c.ProductId,
                         c.ProductName
-                        FROM StockTransaction AS p
+                        FROM StockTransactions AS p
                         INNER JOIN Products AS c 
                         ON p.ProductId = c.ProductId
                         WHERE p.TransactionId = @stockTransactionId";
