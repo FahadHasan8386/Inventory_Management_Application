@@ -14,24 +14,64 @@ namespace InventoryManagementSystem.Api.Repository
         {
             _connection = connection;
         }
+
         public async Task<List<SalesOrder>> GetAllSalesOrderAsync()
         {
-            var sql = @"SELECT * FROM  SalesOrders";
+            var sql = @"SELECT p.SalesOrderId,
+                               p.OrderDate,
+                               p.TotalAmount,
+                               p.InActive,
+                               p.CreatedBy,
+	                           p.CreatedAt,
+	                           p.ModifiedBy,
+	                           p.ModifiedAt,
+                               p.CustomerId,
+                               c.CustomerName
+                               FROM SalesOrders AS p
+                               INNER JOIN Customers AS c ON p.CustomerId = c.CustomerId";
             _connection.Open();
-            var result = await _connection.QueryAsync<SalesOrder>(sql);
+            var result = await _connection.QueryAsync(sql,
+                map: (SalesOrder p, Customer c) =>
+                {
+                    p.Customer = c;
+                    return p;
+                },
+                splitOn: "CustomerId");
             _connection.Close();
+
             return result.ToList();
         }
 
         public async Task<SalesOrder?> GetSalesOrderByIdAsync(long salesOrderId)
         {
-            const string sql = @"SELECT TOP(1) * FROM SalesOrders WHERE SalesOrderId = @salesOrderId";
+            const string sql = @"SELECT p.SalesOrderId,
+                               p.OrderDate,
+                               p.TotalAmount,
+                               p.InActive,
+                               p.CreatedBy,
+	                           p.CreatedAt,
+	                           p.ModifiedBy,
+	                           p.ModifiedAt,
+                               p.CustomerId,
+                               c.CustomerName
+                        FROM SalesOrders AS p
+                        INNER JOIN Customers AS c ON p.CustomerId = c.CustomerId
+                        WHERE p.SalesOrderId = @SalesOrderId";
 
             using var connection = _connection;
-            return await _connection.QueryFirstOrDefaultAsync<SalesOrder>(sql, new
-            {
-                salesOrderId
-            });
+
+            var result = await connection.QueryAsync<SalesOrder, Customer, SalesOrder>(
+                sql,
+                (p, c) =>
+                {
+                    p.Customer = c;
+                    return p;
+                },
+                new { salesOrderId },
+                splitOn: "CustomerId"
+            );
+
+            return result.FirstOrDefault();
         }
 
         public async Task<long> AddSalesOrderAsync(SalesOrderDto salesOrderDto)

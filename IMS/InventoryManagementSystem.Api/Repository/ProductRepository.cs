@@ -64,7 +64,7 @@ namespace InventoryManagementSystem.Api.Repository
                     p.Category = c;
                     return p;
                 },
-                new { ProductId = productId },
+                new { productId },
                 splitOn: "CategoryId"
             );
 
