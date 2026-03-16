@@ -10,7 +10,7 @@ namespace InventoryManagementSystem.Api.Interfaces.IServices
         Task<Product?> GetProductByIdAsync(long productId);
         Task<ResponseModel> AddProductAsync(ProductDto productDto);
         Task<ResponseModel> UpdateProductAsync(ProductDto productDto);
-        Task<int> DeleteProductAsync(long productId);
+        Task<ResponseModel> DeleteProductAsync(long productId);
         
     }
 }

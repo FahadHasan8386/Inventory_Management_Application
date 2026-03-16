@@ -145,9 +145,50 @@ namespace InventoryManagementSystem.Api.Services
             }
         }
 
-        public async Task<int> DeleteProductAsync(long productId)
+        public async Task<ResponseModel> DeleteProductAsync(long productId)
         {
-            return await _productRepository.DeleteProductAsync(productId);
+            try
+            {
+                if (productId <= 0)
+                {
+                    return new ResponseModel
+                    {
+                        Code = StatusCodes.Status400BadRequest,
+                        Message = "Required Product id."
+                    };
+
+                }
+                int result;
+                using (TransactionScope transactionScope = new(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    result = await _productRepository.DeleteProductAsync(productId);
+                    transactionScope.Complete();
+                }
+                if (result > 0)
+                {
+                    return new ResponseModel
+                    {
+                        Code = StatusCodes.Status200OK,
+                        Message = "Product deleted Sucessfully."
+                    };
+                }
+                else
+                {
+                    return new ResponseModel
+                    {
+                        Code = StatusCodes.Status404NotFound,
+                        Message = "Product not found."
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModel
+                {
+                    Code = 500,
+                    Message = ex.Message.ToString()
+                };
+            }
         }
     }
 }
