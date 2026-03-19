@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="IMS.Shared/IMS.Shared.csproj" Id="c9aa3644-753c-4b0f-9584-9605dc00db54" />
+  <Project Path="IMS.Web/IMS.Web.csproj" Id="c2e9fbb7-0e07-4e64-b379-dbcce3ce2431" />
   <Project Path="InventoryManagementSystem.Api/InventoryManagementSystem.Api.csproj" />
 </Solution>
